@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BridgePath — AI Job Assistant</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0f0f1a; color: white; }
+        
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 60px; background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px); position: fixed; width: 100%; top: 0; z-index: 100;
+        }
+        .logo { font-size: 24px; font-weight: 700; color: #6c63ff; }
+        .nav-links a { color: white; text-decoration: none; margin-left: 30px; opacity: 0.8; }
+        .nav-links a:hover { opacity: 1; color: #6c63ff; }
+        .btn-nav { background: #6c63ff; padding: 10px 24px; border-radius: 25px; color: white !important; opacity: 1 !important; }
+
+        .hero {
+            min-height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            padding: 120px 20px 60px;
+            background: radial-gradient(ellipse at top, #1a1a3e 0%, #0f0f1a 70%);
+        }
+        .hero h1 { font-size: 56px; font-weight: 800; line-height: 1.2; margin-bottom: 20px; }
+        .hero h1 span { color: #6c63ff; }
+        .hero p { font-size: 20px; opacity: 0.7; max-width: 600px; margin-bottom: 40px; line-height: 1.6; }
+        .btn-primary {
+            background: linear-gradient(135deg, #6c63ff, #a855f7);
+            padding: 16px 40px; border-radius: 30px; font-size: 18px;
+            color: white; text-decoration: none; font-weight: 600;
+            box-shadow: 0 8px 30px rgba(108,99,255,0.4);
+            transition: transform 0.2s;
+        }
+        .btn-primary:hover { transform: translateY(-3px); }
+
+        .features {
+            padding: 100px 60px; display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;
+        }
+        .feature-card {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px; padding: 40px 30px; text-align: center;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .feature-card:hover { transform: translateY(-8px); border-color: #6c63ff; }
+        .feature-icon { font-size: 48px; margin-bottom: 20px; }
+        .feature-card h3 { font-size: 20px; margin-bottom: 12px; color: #6c63ff; }
+        .feature-card p { opacity: 0.7; line-height: 1.6; }
+
+        .cta {
+            text-align: center; padding: 100px 20px;
+            background: radial-gradient(ellipse at center, #1a1a3e 0%, #0f0f1a 70%);
+        }
+        .cta h2 { font-size: 40px; margin-bottom: 20px; }
+        .cta p { opacity: 0.7; margin-bottom: 40px; font-size: 18px; }
+
+        footer {
+            text-align: center; padding: 30px;
+            opacity: 0.4; font-size: 14px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">BridgePath</div>
+    <div class="nav-links">
+        <a href="#">Xüsusiyyətlər</a>
+        <a href="#">Necə işləyir</a>
+        <a href="#">Qiymət</a>
+        <a href="#" class="btn-nav">Başla</a>
+    </div>
+</nav>
+
+<section class="hero">
+    <h1>AI ilə <span>Arzuladığın İşi</span><br>Tap</h1>
+    <p>BridgePath CV-ni analiz edir, sənə uyğun işləri tapır, avtomatik mesajlar yazır və daim sənin yanındadır.</p>
+    <a href="#" class="btn-primary">Pulsuz Başla →</a>
+</section>
+
+<section class="features">
+    <div class="feature-card">
+        <div class="feature-icon">📄</div>
+        <h3>Ağıllı CV Analizi</h3>
+        <p>CV-ni yüklə, AI ixtisasına uyğun güclü və zəif tərəflərini göstərsin.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h3>10/10 Uyğunluq Skoru</h3>
+        <p>Hər vakansiya üçün CV-nin nə qədər uyğun olduğunu dəqiq skalla görürsən.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3>Top 10 İş İmkanı</h3>
+        <p>AI sənin üçün ən uyğun 10 vakansiyani seçir, vaxtını itirmirsən.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">✉️</div>
+        <h3>Avtomatik Mesaj</h3>
+        <p>Hər vakansiya üçün fərdi, peşəkar mesaj AI tərəfindən yazılır.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">🔔</div>
+        <h3>Daimi Nəzarət</h3>
+        <p>Yeni uyğun vakansiya çıxanda dərhal xəbər alırsan, heç nə qaçırmırsan.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">🚀</div>
+        <h3>Bir Klikdə Müraciət</h3>
+        <p>Hazır mesajı "Göndər" düyməsinə basaraq birbaşa göndərirsən.</p>
+    </div>
+</section>
+
+<section class="cta">
+    <h2>İş Axtarışını <span style="color:#6c63ff">Ağıllı Et</span></h2>
+    <p>Minlərlə nəfər artıq BridgePath ilə arzuladığı işi tapdı.</p>
+    <a href="#" class="btn-primary">İndi Başla — Pulsuzdur</a>
+</section>
+
+<footer>
+    <p>© 2026 BridgePath. Bütün hüquqlar qorunur.</p>
+</footer>
+
+</body>
+</html>
