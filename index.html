@@ -1,22 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BridgePath — AI Job Assistant</title>
+    <title>BridgePath — AI İş Asistanı</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', sans-serif; background: #0f0f1a; color: white; }
-        
+
         nav {
             display: flex; justify-content: space-between; align-items: center;
             padding: 20px 60px; background: rgba(255,255,255,0.05);
             backdrop-filter: blur(10px); position: fixed; width: 100%; top: 0; z-index: 100;
         }
         .logo { font-size: 24px; font-weight: 700; color: #6c63ff; }
+        .nav-right { display: flex; align-items: center; gap: 20px; }
         .nav-links a { color: white; text-decoration: none; margin-left: 30px; opacity: 0.8; }
         .nav-links a:hover { opacity: 1; color: #6c63ff; }
         .btn-nav { background: #6c63ff; padding: 10px 24px; border-radius: 25px; color: white !important; opacity: 1 !important; }
+
+        /* Dil Seçici */
+        .lang-selector { position: relative; }
+        .lang-btn {
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            color: white; padding: 8px 16px; border-radius: 20px; cursor: pointer;
+            font-size: 14px; display: flex; align-items: center; gap: 6px;
+        }
+        .lang-dropdown {
+            position: absolute; top: 45px; right: 0; background: #1a1a2e;
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+            padding: 8px; min-width: 160px; display: none; z-index: 999;
+        }
+        .lang-dropdown.open { display: block; }
+        .lang-option {
+            padding: 8px 14px; border-radius: 8px; cursor: pointer;
+            font-size: 14px; transition: background 0.2s;
+        }
+        .lang-option:hover { background: rgba(108,99,255,0.2); }
+        .lang-option.active { color: #6c63ff; font-weight: 600; }
 
         .hero {
             min-height: 100vh; display: flex; flex-direction: column;
@@ -31,8 +52,7 @@
             background: linear-gradient(135deg, #6c63ff, #a855f7);
             padding: 16px 40px; border-radius: 30px; font-size: 18px;
             color: white; text-decoration: none; font-weight: 600;
-            box-shadow: 0 8px 30px rgba(108,99,255,0.4);
-            transition: transform 0.2s;
+            box-shadow: 0 8px 30px rgba(108,99,255,0.4); transition: transform 0.2s;
         }
         .btn-primary:hover { transform: translateY(-3px); }
 
@@ -58,8 +78,7 @@
         .cta p { opacity: 0.7; margin-bottom: 40px; font-size: 18px; }
 
         footer {
-            text-align: center; padding: 30px;
-            opacity: 0.4; font-size: 14px;
+            text-align: center; padding: 30px; opacity: 0.4; font-size: 14px;
             border-top: 1px solid rgba(255,255,255,0.1);
         }
     </style>
@@ -68,62 +87,275 @@
 
 <nav>
     <div class="logo">BridgePath</div>
-    <div class="nav-links">
-        <a href="/register.html">Xüsusiyyətlər</a>
-        <a href="/register.html">Necə işləyir</a>
-        <a href="/register.html">Qiymət</a>
-        <a href="/register.html" class="btn-nav">Başla</a>
+    <div class="nav-right">
+        <div class="nav-links">
+            <a href="#" data-i18n="nav_features">Özellikler</a>
+            <a href="#" data-i18n="nav_how">Nasıl Çalışır</a>
+            <a href="#" data-i18n="nav_price">Fiyat</a>
+            <a href="/register.html" class="btn-nav" data-i18n="nav_start">Başla</a>
+        </div>
+        <div class="lang-selector">
+            <button class="lang-btn" onclick="toggleLang()">
+                <span id="currentFlag">🇹🇷</span>
+                <span id="currentLang">TR</span> ▾
+            </button>
+            <div class="lang-dropdown" id="langDropdown">
+                <div class="lang-option active" onclick="setLang('tr')">🇹🇷 Türkçe</div>
+                <div class="lang-option" onclick="setLang('az')">🇦🇿 Azərbaycan</div>
+                <div class="lang-option" onclick="setLang('en')">🇬🇧 English</div>
+                <div class="lang-option" onclick="setLang('ru')">🇷🇺 Русский</div>
+                <div class="lang-option" onclick="setLang('ar')">🇸🇦 العربية</div>
+                <div class="lang-option" onclick="setLang('de')">🇩🇪 Deutsch</div>
+                <div class="lang-option" onclick="setLang('fr')">🇫🇷 Français</div>
+                <div class="lang-option" onclick="setLang('es')">🇪🇸 Español</div>
+                <div class="lang-option" onclick="setLang('pl')">🇵🇱 Polski</div>
+                <div class="lang-option" onclick="setLang('ka')">🇬🇪 ქართული</div>
+            </div>
+        </div>
     </div>
 </nav>
 
 <section class="hero">
-    <h1>AI ilə <span>Arzuladığın İşi</span><br>Tap</h1>
-    <p>BridgePath CV-ni analiz edir, sənə uyğun işləri tapır, avtomatik mesajlar yazır və daim sənin yanındadır.</p>
-    <href="/register.html" class="btn-primary">Pulsuz Başla →</a>
+    <h1 data-i18n="hero_title">AI ile <span data-i18n="hero_title_span">Hayalindeki İşi</span><br>Bul</h1>
+    <p data-i18n="hero_desc">BridgePath CV'ni analiz eder, sana uygun işleri bulur, otomatik mesajlar yazar ve her zaman yanındadır.</p>
+    <a href="/register.html" class="btn-primary" data-i18n="hero_btn">Ücretsiz Başla →</a>
 </section>
 
 <section class="features">
     <div class="feature-card">
         <div class="feature-icon">📄</div>
-        <h3>Ağıllı CV Analizi</h3>
-        <p>CV-ni yüklə, AI ixtisasına uyğun güclü və zəif tərəflərini göstərsin.</p>
+        <h3 data-i18n="f1_title">Akıllı CV Analizi</h3>
+        <p data-i18n="f1_desc">CV'ni yükle, AI uzmanlığına göre güçlü ve zayıf yönlerini göstersin.</p>
     </div>
     <div class="feature-card">
         <div class="feature-icon">🎯</div>
-        <h3>10/10 Uyğunluq Skoru</h3>
-        <p>Hər vakansiya üçün CV-nin nə qədər uyğun olduğunu dəqiq skalla görürsən.</p>
+        <h3 data-i18n="f2_title">10/10 Uyum Skoru</h3>
+        <p data-i18n="f2_desc">Her ilan için CV'nin ne kadar uygun olduğunu tam olarak görürsün.</p>
     </div>
     <div class="feature-card">
         <div class="feature-icon">🔍</div>
-        <h3>Top 10 İş İmkanı</h3>
-        <p>AI sənin üçün ən uyğun 10 vakansiyani seçir, vaxtını itirmirsən.</p>
+        <h3 data-i18n="f3_title">Top 10 İş İmkanı</h3>
+        <p data-i18n="f3_desc">AI senin için en uygun 10 ilanı seçer, zaman kaybetmezsin.</p>
     </div>
     <div class="feature-card">
         <div class="feature-icon">✉️</div>
-        <h3>Avtomatik Mesaj</h3>
-        <p>Hər vakansiya üçün fərdi, peşəkar mesaj AI tərəfindən yazılır.</p>
+        <h3 data-i18n="f4_title">Otomatik Mesaj</h3>
+        <p data-i18n="f4_desc">Her ilan için kişisel, profesyonel mesaj AI tarafından yazılır.</p>
     </div>
     <div class="feature-card">
         <div class="feature-icon">🔔</div>
-        <h3>Daimi Nəzarət</h3>
-        <p>Yeni uyğun vakansiya çıxanda dərhal xəbər alırsan, heç nə qaçırmırsan.</p>
+        <h3 data-i18n="f5_title">Sürekli Takip</h3>
+        <p data-i18n="f5_desc">Yeni uygun ilan çıktığında anında haberdar olursun.</p>
     </div>
     <div class="feature-card">
         <div class="feature-icon">🚀</div>
-        <h3>Bir Klikdə Müraciət</h3>
-        <p>Hazır mesajı "Göndər" düyməsinə basaraq birbaşa göndərirsən.</p>
+        <h3 data-i18n="f6_title">Tek Tıkla Başvur</h3>
+        <p data-i18n="f6_desc">Hazır mesajı "Gönder" butonuna basarak doğrudan gönderirsin.</p>
     </div>
 </section>
 
 <section class="cta">
-    <h2>İş Axtarışını <span style="color:#6c63ff">Ağıllı Et</span></h2>
-    <p>Minlərlə nəfər artıq BridgePath ilə arzuladığı işi tapdı.</p>
-    <a href="/register.html" class="btn-primary">İndi Başla — Pulsuzdur</a>
+    <h2 data-i18n="cta_title">İş Aramayı <span style="color:#6c63ff" data-i18n="cta_span">Akıllı Hale Getir</span></h2>
+    <p data-i18n="cta_desc">Binlerce kişi zaten BridgePath ile hayalindeki işi buldu.</p>
+    <a href="/register.html" class="btn-primary" data-i18n="cta_btn">Hemen Başla — Ücretsiz</a>
 </section>
 
 <footer>
-    <p>© 2026 BridgePath. Bütün hüquqlar qorunur.</p>
+    <p>© 2026 BridgePath. <span data-i18n="footer">Tüm hakları saklıdır.</span></p>
 </footer>
+
+<script>
+const translations = {
+    tr: {
+        flag: "🇹🇷", code: "TR",
+        nav_features: "Özellikler", nav_how: "Nasıl Çalışır", nav_price: "Fiyat", nav_start: "Başla",
+        hero_title: "AI ile Hayalindeki İşi Bul", hero_title_span: "Hayalindeki İşi",
+        hero_desc: "BridgePath CV'ni analiz eder, sana uygun işleri bulur, otomatik mesajlar yazar ve her zaman yanındadır.",
+        hero_btn: "Ücretsiz Başla →",
+        f1_title: "Akıllı CV Analizi", f1_desc: "CV'ni yükle, AI uzmanlığına göre güçlü ve zayıf yönlerini göstersin.",
+        f2_title: "10/10 Uyum Skoru", f2_desc: "Her ilan için CV'nin ne kadar uygun olduğunu tam olarak görürsün.",
+        f3_title: "Top 10 İş İmkanı", f3_desc: "AI senin için en uygun 10 ilanı seçer, zaman kaybetmezsin.",
+        f4_title: "Otomatik Mesaj", f4_desc: "Her ilan için kişisel, profesyonel mesaj AI tarafından yazılır.",
+        f5_title: "Sürekli Takip", f5_desc: "Yeni uygun ilan çıktığında anında haberdar olursun.",
+        f6_title: "Tek Tıkla Başvur", f6_desc: "Hazır mesajı 'Gönder' butonuna basarak doğrudan gönderirsin.",
+        cta_title: "İş Aramayı Akıllı Hale Getir", cta_span: "Akıllı Hale Getir",
+        cta_desc: "Binlerce kişi zaten BridgePath ile hayalindeki işi buldu.",
+        cta_btn: "Hemen Başla — Ücretsiz", footer: "Tüm hakları saklıdır."
+    },
+    az: {
+        flag: "🇦🇿", code: "AZ",
+        nav_features: "Xüsusiyyətlər", nav_how: "Necə işləyir", nav_price: "Qiymət", nav_start: "Başla",
+        hero_title: "AI ilə Arzuladığın İşi Tap", hero_title_span: "Arzuladığın İşi",
+        hero_desc: "BridgePath CV-ni analiz edir, sənə uyğun işləri tapır, avtomatik mesajlar yazır və daim sənin yanındadır.",
+        hero_btn: "Pulsuz Başla →",
+        f1_title: "Ağıllı CV Analizi", f1_desc: "CV-ni yüklə, AI ixtisasına uyğun güclü və zəif tərəflərini göstərsin.",
+        f2_title: "10/10 Uyğunluq Skoru", f2_desc: "Hər vakansiya üçün CV-nin nə qədər uyğun olduğunu dəqiq görürsən.",
+        f3_title: "Top 10 İş İmkanı", f3_desc: "AI sənin üçün ən uyğun 10 vakansiyani seçir, vaxtını itirmirsən.",
+        f4_title: "Avtomatik Mesaj", f4_desc: "Hər vakansiya üçün fərdi, peşəkar mesaj AI tərəfindən yazılır.",
+        f5_title: "Daimi Nəzarət", f5_desc: "Yeni uyğun vakansiya çıxanda dərhal xəbər alırsan.",
+        f6_title: "Bir Klikdə Müraciət", f6_desc: "Hazır mesajı 'Göndər' düyməsinə basaraq birbaşa göndərirsən.",
+        cta_title: "İş Axtarışını Ağıllı Et", cta_span: "Ağıllı Et",
+        cta_desc: "Minlərlə nəfər artıq BridgePath ilə arzuladığı işi tapdı.",
+        cta_btn: "İndi Başla — Pulsuzdur", footer: "Bütün hüquqlar qorunur."
+    },
+    en: {
+        flag: "🇬🇧", code: "EN",
+        nav_features: "Features", nav_how: "How it Works", nav_price: "Pricing", nav_start: "Get Started",
+        hero_title: "Find Your Dream Job with AI", hero_title_span: "Dream Job",
+        hero_desc: "BridgePath analyzes your CV, finds matching jobs, writes personalized messages and monitors opportunities 24/7.",
+        hero_btn: "Start for Free →",
+        f1_title: "Smart CV Analysis", f1_desc: "Upload your CV and let AI show your strengths and weaknesses by expertise.",
+        f2_title: "10/10 Match Score", f2_desc: "See exactly how well your CV matches each job listing.",
+        f3_title: "Top 10 Job Matches", f3_desc: "AI selects the 10 most relevant jobs for you, saving your time.",
+        f4_title: "Auto Message", f4_desc: "A personalized, professional message is written by AI for each job.",
+        f5_title: "Constant Monitoring", f5_desc: "Get notified instantly when a new matching job appears.",
+        f6_title: "One-Click Apply", f6_desc: "Send the ready message directly by clicking the Send button.",
+        cta_title: "Make Job Search Smart", cta_span: "Smart",
+        cta_desc: "Thousands of people have already found their dream job with BridgePath.",
+        cta_btn: "Start Now — It's Free", footer: "All rights reserved."
+    },
+    ru: {
+        flag: "🇷🇺", code: "RU",
+        nav_features: "Функции", nav_how: "Как работает", nav_price: "Цены", nav_start: "Начать",
+        hero_title: "Найди работу мечты с AI", hero_title_span: "работу мечты",
+        hero_desc: "BridgePath анализирует ваше резюме, находит подходящие вакансии, пишет персональные сообщения и следит за новыми предложениями.",
+        hero_btn: "Начать бесплатно →",
+        f1_title: "Умный анализ резюме", f1_desc: "Загрузите резюме, AI покажет сильные и слабые стороны.",
+        f2_title: "Оценка совместимости 10/10", f2_desc: "Видите точное совпадение вашего резюме с каждой вакансией.",
+        f3_title: "Топ 10 вакансий", f3_desc: "AI выбирает 10 наиболее подходящих вакансий, экономя ваше время.",
+        f4_title: "Автоматическое сообщение", f4_desc: "Персональное профессиональное сообщение пишется AI для каждой вакансии.",
+        f5_title: "Постоянный мониторинг", f5_desc: "Мгновенное уведомление при появлении новой подходящей вакансии.",
+        f6_title: "Один клик — отклик", f6_desc: "Отправьте готовое сообщение нажатием кнопки.",
+        cta_title: "Сделай поиск работы умным", cta_span: "умным",
+        cta_desc: "Тысячи людей уже нашли работу мечты с BridgePath.",
+        cta_btn: "Начать сейчас — Бесплатно", footer: "Все права защищены."
+    },
+    ar: {
+        flag: "🇸🇦", code: "AR",
+        nav_features: "الميزات", nav_how: "كيف يعمل", nav_price: "الأسعار", nav_start: "ابدأ",
+        hero_title: "اعثر على وظيفة أحلامك مع AI", hero_title_span: "وظيفة أحلامك",
+        hero_desc: "BridgePath يحلل سيرتك الذاتية، يجد الوظائف المناسبة، يكتب رسائل شخصية ويراقب الفرص باستمرار.",
+        hero_btn: "ابدأ مجاناً →",
+        f1_title: "تحليل ذكي للسيرة الذاتية", f1_desc: "ارفع سيرتك الذاتية ودع AI يُظهر نقاط قوتك وضعفك.",
+        f2_title: "نقاط التطابق 10/10", f2_desc: "اعرف بالضبط مدى تطابق سيرتك مع كل وظيفة.",
+        f3_title: "أفضل 10 فرص عمل", f3_desc: "يختار AI أفضل 10 وظائف مناسبة لك لتوفير وقتك.",
+        f4_title: "رسالة تلقائية", f4_desc: "يُكتب رسالة شخصية ومهنية بواسطة AI لكل وظيفة.",
+        f5_title: "متابعة مستمرة", f5_desc: "احصل على إشعار فوري عند ظهور وظيفة جديدة مناسبة.",
+        f6_title: "تقدّم بنقرة واحدة", f6_desc: "أرسل الرسالة الجاهزة مباشرة بالضغط على زر الإرسال.",
+        cta_title: "اجعل البحث عن عمل ذكياً", cta_span: "ذكياً",
+        cta_desc: "آلاف الأشخاص وجدوا وظيفة أحلامهم مع BridgePath.",
+        cta_btn: "ابدأ الآن — مجاناً", footer: "جميع الحقوق محفوظة."
+    },
+    de: {
+        flag: "🇩🇪", code: "DE",
+        nav_features: "Funktionen", nav_how: "Wie es funktioniert", nav_price: "Preise", nav_start: "Loslegen",
+        hero_title: "Finde deinen Traumjob mit AI", hero_title_span: "Traumjob",
+        hero_desc: "BridgePath analysiert deinen Lebenslauf, findet passende Jobs, schreibt personalisierte Nachrichten und überwacht Chancen rund um die Uhr.",
+        hero_btn: "Kostenlos starten →",
+        f1_title: "Intelligente CV-Analyse", f1_desc: "Lade deinen Lebenslauf hoch und lass AI Stärken und Schwächen zeigen.",
+        f2_title: "10/10 Übereinstimmungsscore", f2_desc: "Sieh genau, wie gut dein Lebenslauf zu jeder Stelle passt.",
+        f3_title: "Top 10 Jobmöglichkeiten", f3_desc: "AI wählt die 10 passendsten Jobs für dich aus.",
+        f4_title: "Automatische Nachricht", f4_desc: "Eine persönliche, professionelle Nachricht wird von AI für jede Stelle geschrieben.",
+        f5_title: "Ständige Überwachung", f5_desc: "Erhalte sofortige Benachrichtigung bei neuen passenden Stellen.",
+        f6_title: "Ein-Klick-Bewerbung", f6_desc: "Sende die fertige Nachricht direkt per Klick.",
+        cta_title: "Jobsuche intelligent machen", cta_span: "intelligent",
+        cta_desc: "Tausende Menschen haben mit BridgePath ihren Traumjob gefunden.",
+        cta_btn: "Jetzt starten — Kostenlos", footer: "Alle Rechte vorbehalten."
+    },
+    fr: {
+        flag: "🇫🇷", code: "FR",
+        nav_features: "Fonctionnalités", nav_how: "Comment ça marche", nav_price: "Tarifs", nav_start: "Commencer",
+        hero_title: "Trouvez votre emploi de rêve avec AI", hero_title_span: "emploi de rêve",
+        hero_desc: "BridgePath analyse votre CV, trouve des emplois correspondants, rédige des messages personnalisés et surveille les opportunités 24h/24.",
+        hero_btn: "Commencer gratuitement →",
+        f1_title: "Analyse intelligente du CV", f1_desc: "Téléchargez votre CV et laissez AI montrer vos points forts et faibles.",
+        f2_title: "Score de compatibilité 10/10", f2_desc: "Voyez exactement à quel point votre CV correspond à chaque offre.",
+        f3_title: "Top 10 opportunités d'emploi", f3_desc: "AI sélectionne les 10 offres les plus pertinentes pour vous.",
+        f4_title: "Message automatique", f4_desc: "Un message personnel et professionnel est rédigé par AI pour chaque offre.",
+        f5_title: "Surveillance constante", f5_desc: "Soyez notifié instantanément lors d'une nouvelle offre correspondante.",
+        f6_title: "Postuler en un clic", f6_desc: "Envoyez le message prêt directement en cliquant sur le bouton.",
+        cta_title: "Rendez la recherche d'emploi intelligente", cta_span: "intelligente",
+        cta_desc: "Des milliers de personnes ont déjà trouvé leur emploi de rêve avec BridgePath.",
+        cta_btn: "Commencer maintenant — Gratuit", footer: "Tous droits réservés."
+    },
+    es: {
+        flag: "🇪🇸", code: "ES",
+        nav_features: "Características", nav_how: "Cómo funciona", nav_price: "Precios", nav_start: "Empezar",
+        hero_title: "Encuentra tu trabajo ideal con AI", hero_title_span: "trabajo ideal",
+        hero_desc: "BridgePath analiza tu CV, encuentra empleos compatibles, escribe mensajes personalizados y monitorea oportunidades las 24 horas.",
+        hero_btn: "Empezar gratis →",
+        f1_title: "Análisis inteligente del CV", f1_desc: "Sube tu CV y deja que AI muestre tus fortalezas y debilidades.",
+        f2_title: "Puntuación de compatibilidad 10/10", f2_desc: "Ve exactamente qué tan bien coincide tu CV con cada oferta.",
+        f3_title: "Top 10 oportunidades de empleo", f3_desc: "AI selecciona las 10 ofertas más relevantes para ti.",
+        f4_title: "Mensaje automático", f4_desc: "AI redacta un mensaje personal y profesional para cada oferta.",
+        f5_title: "Monitoreo constante", f5_desc: "Recibe notificación instantánea cuando aparezca una nueva oferta.",
+        f6_title: "Postúlate con un clic", f6_desc: "Envía el mensaje listo directamente haciendo clic en el botón.",
+        cta_title: "Haz la búsqueda de empleo inteligente", cta_span: "inteligente",
+        cta_desc: "Miles de personas ya encontraron su trabajo ideal con BridgePath.",
+        cta_btn: "Empezar ahora — Gratis", footer: "Todos los derechos reservados."
+    },
+    pl: {
+        flag: "🇵🇱", code: "PL",
+        nav_features: "Funkcje", nav_how: "Jak to działa", nav_price: "Cennik", nav_start: "Rozpocznij",
+        hero_title: "Znajdź wymarzoną pracę z AI", hero_title_span: "wymarzoną pracę",
+        hero_desc: "BridgePath analizuje Twoje CV, znajduje pasujące oferty, pisze spersonalizowane wiadomości i monitoruje możliwości przez całą dobę.",
+        hero_btn: "Zacznij za darmo →",
+        f1_title: "Inteligentna analiza CV", f1_desc: "Prześlij CV i pozwól AI pokazać mocne i słabe strony.",
+        f2_title: "Wynik dopasowania 10/10", f2_desc: "Zobacz dokładnie, jak bardzo Twoje CV pasuje do każdej oferty.",
+        f3_title: "Top 10 ofert pracy", f3_desc: "AI wybiera 10 najbardziej odpowiednich ofert dla Ciebie.",
+        f4_title: "Automatyczna wiadomość", f4_desc: "AI pisze osobistą, profesjonalną wiadomość dla każdej oferty.",
+        f5_title: "Stałe monitorowanie", f5_desc: "Otrzymuj natychmiastowe powiadomienie o nowej pasującej ofercie.",
+        f6_title: "Aplikuj jednym kliknięciem", f6_desc: "Wyślij gotową wiadomość bezpośrednio klikając przycisk.",
+        cta_title: "Uczyń szukanie pracy inteligentnym", cta_span: "inteligentnym",
+        cta_desc: "Tysiące osób znalazło już wymarzoną pracę z BridgePath.",
+        cta_btn: "Zacznij teraz — Za darmo", footer: "Wszelkie prawa zastrzeżone."
+    },
+    ka: {
+        flag: "🇬🇪", code: "KA",
+        nav_features: "მახასიათებლები", nav_how: "როგორ მუშაობს", nav_price: "ფასი", nav_start: "დაწყება",
+        hero_title: "იპოვე სამოცნაო სამსახური AI-ით", hero_title_span: "სამოცნაო სამსახური",
+        hero_desc: "BridgePath აანალიზებს შენს CV-ს, პოულობს შესაბამის სამსახურებს, წერს პერსონალიზებულ შეტყობინებებს და მუდმივად აკვირდება შესაძლებლობებს.",
+        hero_btn: "უფასოდ დაწყება →",
+        f1_title: "ჭკვიანი CV ანალიზი", f1_desc: "ატვირთე CV და AI აჩვენებს ძლიერ და სუსტ მხარეებს.",
+        f2_title: "10/10 შესაბამისობის ქულა", f2_desc: "ნახე ზუსტად რამდენად შეესაბამება შენი CV ყოველ განცხადებას.",
+        f3_title: "საუკეთესო 10 სამსახური", f3_desc: "AI ირჩევს 10 ყველაზე შესაფერის სამსახურს შენთვის.",
+        f4_title: "ავტომატური შეტყობინება", f4_desc: "AI წერს პერსონალურ, პროფესიონალურ შეტყობინებას ყოველი სამსახურისთვის.",
+        f5_title: "მუდმივი მონიტორინგი", f5_desc: "მიიღე მყისიერი შეტყობინება ახალი შესაფერისი სამსახურის გამოჩენისას.",
+        f6_title: "ერთი დაწკაპუნებით განაცხადი", f6_desc: "გაგზავნე მზა შეტყობინება პირდაპირ ღილაკზე დაჭერით.",
+        cta_title: "სამსახურის ძიება გახადე ჭკვიანი", cta_span: "ჭკვიანი",
+        cta_desc: "ათასობით ადამიანმა უკვე იპოვა სამოცნაო სამსახური BridgePath-ით.",
+        cta_btn: "დაიწყე ახლა — უფასოდ", footer: "ყველა უფლება დაცულია."
+    }
+};
+
+let currentLang = 'tr';
+
+function toggleLang() {
+    document.getElementById('langDropdown').classList.toggle('open');
+}
+
+function setLang(lang) {
+    currentLang = lang;
+    const t = translations[lang];
+    document.getElementById('currentFlag').textContent = t.flag;
+    document.getElementById('currentLang').textContent = t.code;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) el.textContent = t[key];
+    });
+    document.querySelectorAll('.lang-option').forEach(opt => opt.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('langDropdown').classList.remove('open');
+    if (lang === 'ar') document.body.style.direction = 'rtl';
+    else document.body.style.direction = 'ltr';
+}
+
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.lang-selector')) {
+        document.getElementById('langDropdown').classList.remove('open');
+    }
+});
+</script>
 
 </body>
 </html>
