@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BridgePath — Daxil ol</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0f0f1a;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 440px;
+        }
+        .logo {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 800;
+            color: #6c63ff;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            text-align: center;
+            opacity: 0.5;
+            font-size: 14px;
+            margin-bottom: 36px;
+        }
+        .form-group { margin-bottom: 20px; }
+        label {
+            display: block;
+            font-size: 14px;
+            opacity: 0.7;
+            margin-bottom: 8px;
+        }
+        input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 12px;
+            color: white;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        input:focus { border-color: #6c63ff; }
+        input::placeholder { opacity: 0.4; }
+        .forgot {
+            text-align: right;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+        .forgot a { color: #6c63ff; text-decoration: none; opacity: 0.8; }
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #6c63ff, #a855f7);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: transform 0.2s;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .register-link {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 14px;
+            opacity: 0.6;
+        }
+        .register-link a {
+            color: #6c63ff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="logo">BridgePath</div>
+    <div class="subtitle">Xoş gəldin! Hesabına daxil ol</div>
+
+    <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="email@example.com">
+    </div>
+
+    <div class="form-group">
+        <label>Şifrə</label>
+        <input type="password" placeholder="Şifrəni daxil edin">
+        <div class="forgot"><a href="#">Şifrəni unutdum?</a></div>
+    </div>
+
+    <button class="btn" onclick="window.location.href='dashboard.html'">
+        Daxil ol →
+    </button>
+
+    <div class="register-link">
+        Hesabın yoxdur? <a href="register.html">Qeydiyyatdan keç</a>
+    </div>
+</div>
+
+</body>
+</html>  
