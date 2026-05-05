@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,112 +8,131 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', sans-serif;
-            background: #0f0f1a;
-            color: white;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: #0f0f1a; color: white;
+            min-height: 100vh; display: flex;
+            align-items: center; justify-content: center;
         }
         .container {
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 24px;
-            padding: 50px 40px;
-            width: 100%;
-            max-width: 440px;
+            border-radius: 24px; padding: 50px 40px;
+            width: 100%; max-width: 440px;
         }
-        .logo {
-            text-align: center;
-            font-size: 28px;
-            font-weight: 800;
-            color: #6c63ff;
-            margin-bottom: 8px;
-        }
-        .subtitle {
-            text-align: center;
-            opacity: 0.5;
-            font-size: 14px;
-            margin-bottom: 36px;
-        }
+        .logo { text-align: center; font-size: 28px; font-weight: 800; color: #6c63ff; margin-bottom: 8px; }
+        .subtitle { text-align: center; opacity: 0.5; font-size: 14px; margin-bottom: 36px; }
         .form-group { margin-bottom: 20px; }
-        label {
-            display: block;
-            font-size: 14px;
-            opacity: 0.7;
-            margin-bottom: 8px;
-        }
+        label { display: block; font-size: 14px; opacity: 0.7; margin-bottom: 8px; }
         input {
-            width: 100%;
-            padding: 14px 18px;
+            width: 100%; padding: 14px 18px;
             background: rgba(255,255,255,0.08);
             border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 12px;
-            color: white;
-            font-size: 15px;
-            outline: none;
-            transition: border-color 0.3s;
+            border-radius: 12px; color: white; font-size: 15px;
+            outline: none; transition: border-color 0.3s;
         }
         input:focus { border-color: #6c63ff; }
         input::placeholder { opacity: 0.4; }
-        .forgot {
-            text-align: right;
-            font-size: 13px;
-            margin-top: 8px;
-        }
+        .forgot { text-align: right; font-size: 13px; margin-top: 8px; }
         .forgot a { color: #6c63ff; text-decoration: none; opacity: 0.8; }
         .btn {
-            width: 100%;
-            padding: 16px;
+            width: 100%; padding: 16px;
             background: linear-gradient(135deg, #6c63ff, #a855f7);
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: transform 0.2s;
+            border: none; border-radius: 12px; color: white;
+            font-size: 16px; font-weight: 600; cursor: pointer;
+            margin-top: 10px; transition: transform 0.2s;
         }
         .btn:hover { transform: translateY(-2px); }
-        .register-link {
-            text-align: center;
-            margin-top: 24px;
-            font-size: 14px;
-            opacity: 0.6;
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .register-link { text-align: center; margin-top: 24px; font-size: 14px; opacity: 0.6; }
+        .register-link a { color: #6c63ff; text-decoration: none; font-weight: 600; }
+        .error {
+            background: rgba(255,80,80,0.15); border: 1px solid rgba(255,80,80,0.3);
+            border-radius: 10px; padding: 12px 16px; font-size: 14px;
+            color: #ff6b6b; margin-bottom: 16px; display: none;
         }
-        .register-link a {
-            color: #6c63ff;
-            text-decoration: none;
-            font-weight: 600;
+        .success {
+            background: rgba(0,200,100,0.15); border: 1px solid rgba(0,200,100,0.3);
+            border-radius: 10px; padding: 12px 16px; font-size: 14px;
+            color: #00c864; margin-bottom: 16px; display: none;
         }
+        .error.show, .success.show { display: block; }
     </style>
 </head>
 <body>
-
 <div class="container">
     <div class="logo">BridgePath</div>
     <div class="subtitle">Xoş gəldin! Hesabına daxil ol</div>
 
-    <div class="form-group">
-        <label>Email</label>
-        <input type="email" placeholder="email@example.com">
-    </div>
+    <div class="error" id="errorMsg"></div>
+    <div class="success" id="successMsg"></div>
 
     <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="email" placeholder="email@example.com">
+    </div>
+    <div class="form-group">
         <label>Şifrə</label>
-        <input type="password" placeholder="Şifrəni daxil edin">
+        <input type="password" id="password" placeholder="Şifrəni daxil edin">
         <div class="forgot"><a href="#">Şifrəni unutdum?</a></div>
     </div>
 
-    <button class="btn" onclick="window.location.href='dashboard.html'">
-        Daxil ol →
-    </button>
+    <button class="btn" id="loginBtn" onclick="login()">Daxil ol →</button>
 
     <div class="register-link">
-        Hesabın yoxdur? <a href="register.html">Qeydiyyatdan keç</a>
+        Hesabın yoxdur? <a href="/register.html">Qeydiyyatdan keç</a>
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    const SUPABASE_URL = 'https://maercncvouqwiiikrbat.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_zpE_lsq1zF0XzfE10K80AA_gdd_mXXW';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function login() {
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('loginBtn');
+        const errorMsg = document.getElementById('errorMsg');
+        const successMsg = document.getElementById('successMsg');
+
+        errorMsg.classList.remove('show');
+        successMsg.classList.remove('show');
+
+        if (!email || !password) {
+            errorMsg.textContent = '❌ Email və şifrəni daxil edin!';
+            errorMsg.classList.add('show');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'Yüklənir...';
+
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email, password
+        });
+
+        if (error) {
+            if (error.message.includes('Invalid login credentials')) {
+                errorMsg.textContent = '❌ Email və ya şifrə yanlışdır!';
+            } else if (error.message.includes('Email not confirmed')) {
+                errorMsg.textContent = '❌ Email-inizi təsdiqləyin!';
+            } else {
+                errorMsg.textContent = '❌ ' + error.message;
+            }
+            errorMsg.classList.add('show');
+            btn.disabled = false;
+            btn.textContent = 'Daxil ol →';
+        } else {
+            successMsg.textContent = '✅ Uğurla daxil oldunuz!';
+            successMsg.classList.add('show');
+            setTimeout(() => { window.location.href = '/dashboard.html'; }, 1500);
+        }
+    }
+
+    // Enter düyməsi ilə giriş
+    document.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') login();
+    });
+</script>
 </body>
-</html>  
+</html>

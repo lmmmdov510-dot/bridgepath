@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,125 +8,138 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', sans-serif;
-            background: #0f0f1a;
-            color: white;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: #0f0f1a; color: white;
+            min-height: 100vh; display: flex;
+            align-items: center; justify-content: center;
         }
         .container {
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 24px;
-            padding: 50px 40px;
-            width: 100%;
-            max-width: 440px;
+            border-radius: 24px; padding: 50px 40px;
+            width: 100%; max-width: 440px;
         }
-        .logo {
-            text-align: center;
-            font-size: 28px;
-            font-weight: 800;
-            color: #6c63ff;
-            margin-bottom: 8px;
-        }
-        .subtitle {
-            text-align: center;
-            opacity: 0.5;
-            font-size: 14px;
-            margin-bottom: 36px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            font-size: 14px;
-            opacity: 0.7;
-            margin-bottom: 8px;
-        }
+        .logo { text-align: center; font-size: 28px; font-weight: 800; color: #6c63ff; margin-bottom: 8px; }
+        .subtitle { text-align: center; opacity: 0.5; font-size: 14px; margin-bottom: 36px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-size: 14px; opacity: 0.7; margin-bottom: 8px; }
         input {
-            width: 100%;
-            padding: 14px 18px;
+            width: 100%; padding: 14px 18px;
             background: rgba(255,255,255,0.08);
             border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 12px;
-            color: white;
-            font-size: 15px;
-            outline: none;
-            transition: border-color 0.3s;
+            border-radius: 12px; color: white; font-size: 15px;
+            outline: none; transition: border-color 0.3s;
         }
-        input:focus {
-            border-color: #6c63ff;
-        }
+        input:focus { border-color: #6c63ff; }
         input::placeholder { opacity: 0.4; }
         .btn {
-            width: 100%;
-            padding: 16px;
+            width: 100%; padding: 16px;
             background: linear-gradient(135deg, #6c63ff, #a855f7);
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: transform 0.2s;
+            border: none; border-radius: 12px; color: white;
+            font-size: 16px; font-weight: 600; cursor: pointer;
+            margin-top: 10px; transition: transform 0.2s;
         }
         .btn:hover { transform: translateY(-2px); }
-        .login-link {
-            text-align: center;
-            margin-top: 24px;
-            font-size: 14px;
-            opacity: 0.6;
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .login-link { text-align: center; margin-top: 24px; font-size: 14px; opacity: 0.6; }
+        .login-link a { color: #6c63ff; text-decoration: none; font-weight: 600; }
+        .error {
+            background: rgba(255,80,80,0.15); border: 1px solid rgba(255,80,80,0.3);
+            border-radius: 10px; padding: 12px 16px; font-size: 14px;
+            color: #ff6b6b; margin-bottom: 16px; display: none;
         }
-        .login-link a {
-            color: #6c63ff;
-            text-decoration: none;
-            font-weight: 600;
+        .success {
+            background: rgba(0,200,100,0.15); border: 1px solid rgba(0,200,100,0.3);
+            border-radius: 10px; padding: 12px 16px; font-size: 14px;
+            color: #00c864; margin-bottom: 16px; display: none;
         }
-        .divider {
-            text-align: center;
-            opacity: 0.3;
-            margin: 20px 0;
-            font-size: 13px;
-        }
+        .error.show, .success.show { display: block; }
     </style>
 </head>
 <body>
-
 <div class="container">
     <div class="logo">BridgePath</div>
     <div class="subtitle">Pulsuz hesab aç, işini tap</div>
 
+    <div class="error" id="errorMsg"></div>
+    <div class="success" id="successMsg"></div>
+
     <div class="form-group">
         <label>Ad Soyad</label>
-        <input type="text" placeholder="Adınızı daxil edin">
+        <input type="text" id="fullname" placeholder="Adınızı daxil edin">
     </div>
-
     <div class="form-group">
         <label>Email</label>
-        <input type="email" placeholder="email@example.com">
+        <input type="email" id="email" placeholder="email@example.com">
     </div>
-
     <div class="form-group">
         <label>Şifrə</label>
-        <input type="password" placeholder="Minimum 8 simvol">
+        <input type="password" id="password" placeholder="Minimum 6 simvol">
     </div>
-
     <div class="form-group">
         <label>Şifrəni Təsdiqlə</label>
-        <input type="password" placeholder="Şifrəni yenidən daxil edin">
+        <input type="password" id="confirmPassword" placeholder="Şifrəni yenidən daxil edin">
     </div>
 
-    <button class="btn" onclick="window.location.href='dashboard.html'">
-        Hesab Aç →
-    </button>
+    <button class="btn" id="registerBtn" onclick="register()">Hesab Aç →</button>
 
     <div class="login-link">
-        Artıq hesabın var? <a href="login.html">Daxil ol</a>
+        Artıq hesabın var? <a href="/login.html">Daxil ol</a>
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    const SUPABASE_URL = 'https://maercncvouqwiiikrbat.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_zpE_lsq1zF0XzfE10K80AA_gdd_mXXW';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function register() {
+        const fullname = document.getElementById('fullname').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const btn = document.getElementById('registerBtn');
+        const errorMsg = document.getElementById('errorMsg');
+        const successMsg = document.getElementById('successMsg');
+
+        errorMsg.classList.remove('show');
+        successMsg.classList.remove('show');
+
+        if (!fullname || !email || !password || !confirmPassword) {
+            errorMsg.textContent = '❌ Bütün sahələri doldurun!';
+            errorMsg.classList.add('show');
+            return;
+        }
+        if (password.length < 6) {
+            errorMsg.textContent = '❌ Şifrə minimum 6 simvol olmalıdır!';
+            errorMsg.classList.add('show');
+            return;
+        }
+        if (password !== confirmPassword) {
+            errorMsg.textContent = '❌ Şifrələr uyğun gəlmir!';
+            errorMsg.classList.add('show');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'Yüklənir...';
+
+        const { data, error } = await supabase.auth.signUp({
+            email, password,
+            options: { data: { full_name: fullname } }
+        });
+
+        if (error) {
+            errorMsg.textContent = '❌ ' + error.message;
+            errorMsg.classList.add('show');
+            btn.disabled = false;
+            btn.textContent = 'Hesab Aç →';
+        } else {
+            successMsg.textContent = '✅ Hesab yaradıldı! Email-inizi yoxlayın.';
+            successMsg.classList.add('show');
+            setTimeout(() => { window.location.href = '/dashboard.html'; }, 2000);
+        }
+    }
+</script>
 </body>
 </html>
