@@ -84,8 +84,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-    const SUPABASE_URL = 'https://maercncvouqwiiikrbat.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_zpE_lsq1zF0XzfE10K80AA_gdd_mXXW';
+    const SUPABASE_URL = 'https://maercncvosb_publishable_zpE_lsq1zF0XzfE10K80AA_gdd_mXXWuqwiiikrbat.supabase.co';
+    const SUPABASE_KEY = '';
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     async function login() {
@@ -107,29 +107,35 @@
         btn.disabled = true;
         btn.textContent = 'Yüklənir...';
 
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email, password
-        });
+        try {
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
 
-        if (error) {
-            if (error.message.includes('Invalid login credentials')) {
+            console.log('Login data:', data);
+            console.log('Login error:', error);
+
+            if (error) {
                 errorMsg.textContent = '❌ Email və ya şifrə yanlışdır!';
-            } else if (error.message.includes('Email not confirmed')) {
-                errorMsg.textContent = '❌ Email-inizi təsdiqləyin!';
+                errorMsg.classList.add('show');
+                btn.disabled = false;
+                btn.textContent = 'Daxil ol →';
             } else {
-                errorMsg.textContent = '❌ ' + error.message;
+                successMsg.textContent = '✅ Uğurla daxil oldunuz!';
+                successMsg.classList.add('show');
+                setTimeout(() => {
+                    window.location.href = '/dashboard.html';
+                }, 1500);
             }
+        } catch(e) {
+            errorMsg.textContent = '❌ Xəta baş verdi: ' + e.message;
             errorMsg.classList.add('show');
             btn.disabled = false;
             btn.textContent = 'Daxil ol →';
-        } else {
-            successMsg.textContent = '✅ Uğurla daxil oldunuz!';
-            successMsg.classList.add('show');
-            setTimeout(() => { window.location.href = '/dashboard.html'; }, 1500);
         }
     }
 
-    // Enter düyməsi ilə giriş
     document.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') login();
     });
