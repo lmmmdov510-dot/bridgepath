@@ -1,0 +1,10 @@
+{
+  "rewrites": [
+    { "source": "/register", "destination": "/register.html" },
+    { "source": "/login", "destination": "/login.html" },
+    { "source": "/dashboard", "destination": "/dashboard.html" },
+    { "source": "/cv-upload", "destination": "/cv-upload.html" },
+    { "source": "/jobs", "destination": "/jobs.html" },
+    { "source": "/messages", "destination": "/messages.html" }
+  ]
+}
